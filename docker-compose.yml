@@ -1,0 +1,31 @@
+version: "3"
+
+services: 
+  api:
+    container_name: api
+    image:  node:alpine
+    build: .
+    command: npm start
+    networks:
+      - mysql_network
+    ports: 
+     - "3000:3000"
+    depends_on: 
+     - mysql
+    volumes: 
+     - .:/usr/app
+
+  mysql:
+    image: mariadb:10.3
+    container_name: mysql
+    networks:
+      - mysql_network
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    env_file:
+      - ./env/mysql.env
+networks: 
+  mysql_network:
+
+volumes:
+  mysql_volume:
